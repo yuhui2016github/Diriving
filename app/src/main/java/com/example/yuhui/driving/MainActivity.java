@@ -21,9 +21,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     private Button brake;
     private Thread thread;
     private Handler handler;
-    private boolean shouldAccelerate = false;
-    private boolean shouldBrake = false;
-
+    private int mType = 0;
     int speed = 0;
 
     @Override
@@ -35,8 +33,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         dashBoardView = new DashBoardView(this);
         main_panel.addView(dashBoardView,
                 new LinearLayout
-                        .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT));
+                        .LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -49,23 +47,40 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             public void run() {
                 try {
                     while (true) {
-                        while (shouldAccelerate && speed < 180) {
-                            thread.sleep(300);
-                            speed += 5;
-                            handler.sendEmptyMessage(1);
+                        switch (mType) {
+                            case 1: //加速
+                                thread.sleep(300);
+                                if (speed < 180) {
+                                    speed += 5;
+                                }
+                                break;
+                            case 2: //自然减速
+                                thread.sleep(1000);
+                                if (speed > 0) {
+                                    speed -= 1;
+                                }
+                                break;
+                            case 3: //手刹
+                                speed = 0;
+                                break;
+                            case 4: //刹车
+                                thread.sleep(300);
+                                if (speed > 0) {
+                                    speed -= 5;
+                                }
+                                break;
+                            default:
+                                break;
                         }
-                        while (!shouldAccelerate && speed > 0 && !shouldBrake) {
-                            thread.sleep(2000);
-                            speed -= 1;
-                            handler.sendEmptyMessage(1);
+                        if (speed <0 ){
+                            speed =0;
                         }
-                        while (shouldBrake && speed > 0 && !shouldAccelerate) {
-                            thread.sleep(300);
-                            speed -= 5;
-                            handler.sendEmptyMessage(1);
+                        if (speed > 180){
+                            speed = 180;
                         }
+                        handler.sendEmptyMessage(1);
                     }
-                } catch (InterruptedException ex){
+                } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -102,24 +117,21 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         switch (v.getId()) {
             case R.id.accelerate:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    shouldAccelerate = true;
-                    shouldBrake = false;
+                    mType = 1;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    shouldAccelerate = false;
+                    mType = 2;
                 }
                 break;
             case R.id.handbrake:
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    speed = 0;
-                    handler.sendEmptyMessage(1);
+                    mType = 3;
                 }
                 break;
             case R.id.brake:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    shouldAccelerate = false;
-                    shouldBrake = true;
+                    mType = 4;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    shouldBrake = false;
+                    mType = 2;
                 }
                 break;
         }

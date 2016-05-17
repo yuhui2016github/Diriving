@@ -29,6 +29,7 @@ public class DashBoardView extends View {
     public DashBoardView(Context context) {
         super(context);
         mPaint = new Paint();
+        mPaint.setAntiAlias(true);
         textPaint = new Paint();
         speedAreaPaint = new Paint();
         WindowManager wm = (WindowManager) context
@@ -36,7 +37,7 @@ public class DashBoardView extends View {
         int width = wm.getDefaultDisplay().getWidth();
         int height = wm.getDefaultDisplay().getHeight();
         pointX = width / 2;
-        pointY = height / 2;
+        pointY = height / 3;
     }
 
     @Override
@@ -126,47 +127,54 @@ public class DashBoardView extends View {
         String TEXT = String.valueOf(value);
         textPaint.setTextSize(20);
         textPaint.setColor(BLUE);
-        textPaint.setStyle(Paint.Style.STROKE);
         switch (value) {
             case 0:
                 // 计算Baseline绘制的起点X轴坐标
-                baseX = (int) (pointX - radius * Math.cos(Math.PI / 6) + textPaint.measureText(TEXT) / 2);
+                baseX = (int) (pointX - (radius - 40) * Math.cos(Math.PI / 6));
                 // 计算Baseline绘制的Y坐标
-                baseY = (int) (pointY + radius * Math.sin(Math.PI / 6));
+                baseY = (int) (pointY + (radius - 40) * Math.sin(Math.PI / 6));
                 break;
             case 20:
-                baseX = (int) (pointX - radius + 50 + textPaint.measureText(TEXT) / 2);
+                baseX = (int) (pointX - (radius - 40) + textPaint.measureText(TEXT) / 2);
                 baseY = (int) (pointY + textPaint.measureText(TEXT) / 2);
                 break;
             case 40:
-                baseX = (int) (pointX - radius * Math.cos(Math.PI / 6));
-                baseY = (int) (pointY - radius * Math.sin(Math.PI / 6));
+                baseX = (int) (pointX - (radius - 40) * Math.cos(Math.PI / 6));
+                baseY = (int) (pointY - (radius - 40) * Math.sin(Math.PI / 6));
                 break;
             case 60:
-                baseX = (int) (pointX - radius * Math.cos(2 * Math.PI / 6));
-                baseY = (int) (pointY - radius * Math.sin(2 * Math.PI / 6));
+                baseX = (int) (pointX - (radius - 40) * Math.cos(2 * Math.PI / 6));
+                baseY = (int) (pointY - (radius - 40) * Math.sin(2 * Math.PI / 6));
                 break;
             case 80:
-                baseX = (int) (pointX);
-                baseY = (int) (pointY - radius);
+                baseX = (int) (pointX - textPaint.measureText(TEXT) / 2);
+                baseY = (int) (pointY - (radius - 40) + textPaint.measureText(TEXT) / 2);
                 break;
             case 100:
-                baseX = (int) (pointX + radius * Math.cos(2 * Math.PI / 6) - textPaint.measureText(TEXT));
-                baseY = (int) (pointY - radius * Math.sin(2 * Math.PI / 6));
+                baseX = (int) (pointX + (radius - 40) * Math.cos(2 * Math.PI / 6) - textPaint.measureText(TEXT));
+                baseY = (int) (pointY - (radius - 40) * Math.sin(2 * Math.PI / 6));
                 break;
             case 120:
-                baseX = (int) (pointX + radius * Math.cos(Math.PI / 6) - textPaint.measureText(TEXT));
-                baseY = (int) (pointY - radius * Math.sin(Math.PI / 6));
+                baseX = (int) (pointX + (radius - 40) * Math.cos(Math.PI / 6) - textPaint.measureText(TEXT));
+                baseY = (int) (pointY - (radius - 40) * Math.sin(Math.PI / 6));
                 break;
             case 140:
-                baseX = (int) (pointX + radius - textPaint.measureText(TEXT));
-                baseY = (int) (pointY);
+                baseX = (int) (pointX + (radius - 40) - textPaint.measureText(TEXT));
+                baseY = (int) (pointY + textPaint.measureText(TEXT) / 2);
                 break;
             case 160:
-                baseX = (int) (pointX + radius * Math.cos(Math.PI / 6) - textPaint.measureText(TEXT));
-                baseY = (int) (pointY + radius * Math.sin(Math.PI / 6));
+                baseX = (int) (pointX + (radius - 40) * Math.cos(Math.PI / 6) - textPaint.measureText(TEXT));
+                baseY = (int) (pointY + (radius - 40) * Math.sin(Math.PI / 6));
                 break;
         }
         canvas.drawText(TEXT, baseX, baseY, textPaint);
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }

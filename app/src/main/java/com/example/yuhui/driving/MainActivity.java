@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +23,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     private Thread thread;
     private Handler handler;
     private int mType = 0;
+    private boolean isBraking = false;
     int speed = 0;
 
     @Override
@@ -49,22 +51,24 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                     while (true) {
                         switch (mType) {
                             case 1: //加速
-                                thread.sleep(300);
+                                Thread.sleep(300);
+                                Log.i(TAG, "case 1 speed: " + speed);
                                 if (speed < 180) {
                                     speed += 5;
                                 }
                                 break;
                             case 2: //自然减速
-                                thread.sleep(1000);
+                                Thread.sleep(1000);
                                 if (speed > 0) {
                                     speed -= 1;
                                 }
                                 break;
                             case 3: //手刹
                                 speed = 0;
+                                Log.i(TAG, "case 3 speed: " + speed);
                                 break;
                             case 4: //刹车
-                                thread.sleep(300);
+                                Thread.sleep(300);
                                 if (speed > 0) {
                                     speed -= 5;
                                 }
@@ -72,10 +76,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                             default:
                                 break;
                         }
-                        if (speed <0 ){
-                            speed =0;
+                        if (speed < 0) {
+                            speed = 0;
                         }
-                        if (speed > 180){
+                        if (speed > 180) {
                             speed = 180;
                         }
                         handler.sendEmptyMessage(1);
@@ -116,15 +120,24 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     public boolean onTouch(View v, MotionEvent event) {
         switch (v.getId()) {
             case R.id.accelerate:
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    mType = 1;
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    mType = 2;
+                if (!isBraking) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        mType = 1;
+                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                        mType = 2;
+                    }
                 }
                 break;
             case R.id.handbrake:
-                if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_UP) {
                     mType = 3;
+                    isBraking = true;
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            isBraking = false;
+                        }
+                    }, 1000);
                 }
                 break;
             case R.id.brake:

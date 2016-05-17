@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class MainActivity extends Activity implements View.OnTouchListener, Runnable {
+public class MainActivity extends Activity implements View.OnTouchListener {
 
     private static final String TAG = "driving";
     private LinearLayout main_panel;
@@ -22,6 +21,9 @@ public class MainActivity extends Activity implements View.OnTouchListener, Runn
     private Button brake;
     private Thread thread;
     private Handler handler;
+    private boolean shouldAccelerate = false;
+    private boolean shouldBrake = false;
+
     int speed = 0;
 
     @Override
@@ -42,6 +44,33 @@ public class MainActivity extends Activity implements View.OnTouchListener, Runn
                 dashBoardView.invalidate();
             }
         };
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (true) {
+                        while (shouldAccelerate && speed < 180) {
+                            thread.sleep(300);
+                            speed += 5;
+                            handler.sendEmptyMessage(1);
+                        }
+                        while (!shouldAccelerate && speed > 0 && !shouldBrake) {
+                            thread.sleep(2000);
+                            speed -= 1;
+                            handler.sendEmptyMessage(1);
+                        }
+                        while (shouldBrake && speed > 0 && !shouldAccelerate) {
+                            thread.sleep(300);
+                            speed -= 5;
+                            handler.sendEmptyMessage(1);
+                        }
+                    }
+                } catch (InterruptedException ex){
+                    ex.printStackTrace();
+                }
+            }
+        });
+        thread.start();
     }
 
     private void setButtons() {
@@ -73,51 +102,28 @@ public class MainActivity extends Activity implements View.OnTouchListener, Runn
         switch (v.getId()) {
             case R.id.accelerate:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Log.i(TAG, "MotionEvent.ACTION_DOWN");
-//                    thread = new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            while (true) {
-//                                speed += 5;
-//                                handler.sendEmptyMessage(1);
-//                            }
-//                        }
-//                    });
-//                    thread.start();
+                    shouldAccelerate = true;
+                    shouldBrake = false;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-//                    thread.interrupt();
-//                    thread = new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            while (true) {
-//                                speed -= 1;
-//                                handler.sendEmptyMessage(0);
-//                            }
-//                        }
-//                    });
-//                    thread.start();
+                    shouldAccelerate = false;
                 }
                 break;
             case R.id.handbrake:
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
                     speed = 0;
+                    handler.sendEmptyMessage(1);
                 }
                 break;
             case R.id.brake:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    speed -= 5;
-
+                    shouldAccelerate = false;
+                    shouldBrake = true;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    shouldBrake = false;
                 }
                 break;
         }
 
         return false;
-    }
-
-    @Override
-    public void run() {
-
     }
 }

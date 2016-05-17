@@ -2,22 +2,23 @@ package com.example.yuhui.driving;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 public class MainActivity extends Activity {
 
+    LinearLayout main_panel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        main_panel = (LinearLayout) findViewById(R.id.main_panel);
+        DashBoardView dashBoardView = new DashBoardView(this);
+        main_panel.addView(dashBoardView,
+                new LinearLayout
+                        .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
     @Override

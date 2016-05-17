@@ -3,6 +3,7 @@ package com.example.yuhui.driving;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.view.View;
 
 /**
@@ -10,18 +11,25 @@ import android.view.View;
  */
 public class DashBoardView extends View {
 
-    private int pointX = 500;
+    private int pointX = 275;
     private int pointY = 500;
     private int GRAY = 0xFF343434;
     private int BLUE = 0xE73F51B5;
-    int radius = 300;
+    private int baseX = 0;
+    private int baseY = 0;
+    private int radius = 250;
     private Paint mPaint;
-    //TODO: Need fix the dpi apaptered with screen dpi
-    private int mDensityDpi = 10;
+    private Paint textPaint;
+    private Paint speedAreaPaint;
+    private int speed = 0;
+    //TODO: N eed fix the dpi apaptered with screen dpi
+    private int mDensityDpi = 1;
 
     public DashBoardView(Context context) {
         super(context);
         mPaint = new Paint();
+        textPaint = new Paint();
+        speedAreaPaint = new Paint();
     }
 
     @Override
@@ -33,8 +41,46 @@ public class DashBoardView extends View {
     protected void onDraw(Canvas canvas) {
         drawDashBoardCircle(canvas);
         drawScale(canvas);
+        for (int i = 0; i < 9; i++) {
+            drawText(canvas, i * 20);
+        }
+        drawCenter(canvas);
+        drawSpeedArea(canvas);
+    }
 
+    private void drawSpeedArea(Canvas canvas) {
+        int degree;
+        if (speed < 180) {
+            degree = speed * 30 / 20;
+        } else {
+            degree = 180 * 30 / 20;
+        }
+        RectF speedRectF = new RectF();
+        speedAreaPaint.setColor(BLUE);
+        speedAreaPaint.setStyle(Paint.Style.FILL);
+        speedAreaPaint.setAlpha(125);
+        canvas.drawArc(speedRectF, 150, degree, true, speedAreaPaint);
 
+        //不显示中间的内圈的扇形区域
+        RectF speedRectFInner = new RectF();
+        mPaint.setColor(GRAY);
+        mPaint.setStyle(Paint.Style.FILL);
+        canvas.drawArc(speedRectFInner, 150, degree, true, mPaint);
+        mPaint.setStyle(Paint.Style.STROKE);
+    }
+
+    private void drawCenter(Canvas canvas) {
+        textPaint.setTextSize(60);
+        float tw = textPaint.measureText(String.valueOf(speed));
+        baseX = (int) (pointX - tw / 2);
+        baseY = (int) (pointY + Math.abs(textPaint.descent() + textPaint.ascent()) / 4);
+        canvas.drawText(String.valueOf(speed), baseX, baseY, textPaint);
+        //单位
+        textPaint.setTextSize(20);
+        tw = textPaint.measureText("km/h");
+        baseX = (int) (pointX - tw / 2);
+        baseY = (int) (pointY + radius / 4 + Math.abs(textPaint.descent() + textPaint.ascent()) / 4);
+        canvas.drawText("km/h", baseX, baseY, textPaint);
     }
 
     private void drawScale(Canvas canvas) {
@@ -42,7 +88,7 @@ public class DashBoardView extends View {
         mPaint.setColor(BLUE);
         for (int i = 0; i < 60; i++) {
             if (i % 5 == 0) {
-                canvas.drawLine(pointX - radius, pointY, pointX - radius + 20, pointY, mPaint);
+                canvas.drawLine(pointX - radius, pointY, pointX - radius + 40, pointY, mPaint);
             } else {
                 canvas.drawLine(pointX - radius, pointY, pointX - radius + 10, pointY, mPaint);
             }
@@ -62,7 +108,7 @@ public class DashBoardView extends View {
         mPaint.setStrokeWidth(3 * mDensityDpi);
         canvas.drawCircle(pointX, pointY, radius - 10, mPaint);
 
-        mPaint.setStrokeWidth(5 * mDensityDpi);
+        mPaint.setStrokeWidth(1 * mDensityDpi);
         mPaint.setColor(BLUE);
         canvas.drawCircle(pointX, pointY, radius / 2, mPaint);
         mPaint.setStrokeWidth(3 * mDensityDpi);
@@ -71,11 +117,8 @@ public class DashBoardView extends View {
 
     private void drawText(Canvas canvas, int value) {
         String TEXT = String.valueOf(value);
-        Paint textPaint = new Paint();
         textPaint.setColor(BLUE);
         textPaint.setStyle(Paint.Style.STROKE);
-        int baseX = 0;
-        int baseY = 0;
         switch (value) {
             case 0:
                 // 计算Baseline绘制的起点X轴坐标

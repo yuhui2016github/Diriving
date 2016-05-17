@@ -5,14 +5,15 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.View;
+import android.view.WindowManager;
 
 /**
  * Created by yuhui on 2016-5-17.
  */
 public class DashBoardView extends View {
 
-    private int pointX = 275;
-    private int pointY = 500;
+    private int pointX;
+    private int pointY;
     private int GRAY = 0xFF343434;
     private int BLUE = 0xE73F51B5;
     private int baseX = 0;
@@ -30,6 +31,12 @@ public class DashBoardView extends View {
         mPaint = new Paint();
         textPaint = new Paint();
         speedAreaPaint = new Paint();
+        WindowManager wm = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        int width = wm.getDefaultDisplay().getWidth();
+        int height = wm.getDefaultDisplay().getHeight();
+        pointX = width / 2;
+        pointY = height / 2;
     }
 
     @Override
@@ -117,6 +124,7 @@ public class DashBoardView extends View {
 
     private void drawText(Canvas canvas, int value) {
         String TEXT = String.valueOf(value);
+        textPaint.setTextSize(20);
         textPaint.setColor(BLUE);
         textPaint.setStyle(Paint.Style.STROKE);
         switch (value) {
@@ -128,7 +136,7 @@ public class DashBoardView extends View {
                 break;
             case 20:
                 baseX = (int) (pointX - radius + 50 + textPaint.measureText(TEXT) / 2);
-                baseY = (int) (pointY);
+                baseY = (int) (pointY + textPaint.measureText(TEXT) / 2);
                 break;
             case 40:
                 baseX = (int) (pointX - radius * Math.cos(Math.PI / 6));

@@ -5,16 +5,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 import android.view.WindowManager;
 
 /**
  * Created by yuhui on 2016-5-17.
  */
-public class DashBoardView extends SurfaceView implements SurfaceHolder.Callback{
+public class DashBoardView extends SurfaceView implements SurfaceHolder.Callback {
 
     private int pointX;
     private int pointY;
@@ -30,6 +28,7 @@ public class DashBoardView extends SurfaceView implements SurfaceHolder.Callback
     //TODO: N eed fix the dpi apaptered with screen dpi
     private int mDensityDpi = 1;
     private SurfaceHolder mHolder;
+    private boolean running;
 
     public DashBoardView(Context context) {
         super(context);
@@ -195,19 +194,28 @@ public class DashBoardView extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        running = true;
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true) {
+                while (running) {
                     Canvas canvas = mHolder.lockCanvas();
-                    drawDashBoardCircle(canvas);
-                    drawSpeedArea(canvas);
-                    drawScale(canvas);
-                    for (int i = 0; i <= 9; i++) {
-                        drawText(canvas, i * 20);
+                    try {
+                        drawDashBoardCircle(canvas);
+                        drawSpeedArea(canvas);
+                        drawScale(canvas);
+                        for (int i = 0; i <= 9; i++) {
+                            drawText(canvas, i * 20);
+                        }
+                        drawCenter(canvas);
+
+                    } catch (NullPointerException ep) {
+                        ep.printStackTrace();
+                    } finally {
+                        if (canvas != null) {
+                            mHolder.unlockCanvasAndPost(canvas);
+                        }
                     }
-                    drawCenter(canvas);
-                    mHolder.unlockCanvasAndPost(canvas);
                 }
             }
         }).start();
@@ -220,6 +228,6 @@ public class DashBoardView extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-
+        running = false;
     }
 }

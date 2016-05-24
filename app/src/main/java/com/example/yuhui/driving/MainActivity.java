@@ -24,7 +24,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     private Handler handler;
     private int mType = 0;
     private boolean isBraking = false;
-    int speed = 0;
+    private int speed = 0;
+    private boolean running;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +45,12 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 //                dashBoardView.invalidate();
             }
         };
+        running = true;
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    while (true) {
+                    while (running) {
                         switch (mType) {
                             case 1: //加速
                                 Thread.sleep(300);
@@ -114,6 +116,12 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        running = false;
     }
 
     @Override

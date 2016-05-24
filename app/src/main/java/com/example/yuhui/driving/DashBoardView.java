@@ -5,13 +5,16 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 
 /**
  * Created by yuhui on 2016-5-17.
  */
-public class DashBoardView extends View {
+public class DashBoardView extends SurfaceView implements SurfaceHolder.Callback{
 
     private int pointX;
     private int pointY;
@@ -26,6 +29,7 @@ public class DashBoardView extends View {
     private int speed = 0;
     //TODO: N eed fix the dpi apaptered with screen dpi
     private int mDensityDpi = 1;
+    private SurfaceHolder mHolder;
 
     public DashBoardView(Context context) {
         super(context);
@@ -39,6 +43,8 @@ public class DashBoardView extends View {
         int height = wm.getDefaultDisplay().getHeight();
         pointX = width / 2;
         pointY = height / 3;
+        mHolder = this.getHolder();
+        mHolder.addCallback(this);
     }
 
     @Override
@@ -185,5 +191,35 @@ public class DashBoardView extends View {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    Canvas canvas = mHolder.lockCanvas();
+                    drawDashBoardCircle(canvas);
+                    drawSpeedArea(canvas);
+                    drawScale(canvas);
+                    for (int i = 0; i <= 9; i++) {
+                        drawText(canvas, i * 20);
+                    }
+                    drawCenter(canvas);
+                    mHolder.unlockCanvasAndPost(canvas);
+                }
+            }
+        }).start();
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+
     }
 }

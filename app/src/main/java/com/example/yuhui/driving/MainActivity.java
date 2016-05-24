@@ -41,7 +41,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             @Override
             public void handleMessage(Message msg) {
                 dashBoardView.setSpeed(speed);
-                dashBoardView.invalidate();
+//                dashBoardView.invalidate();
             }
         };
         thread = new Thread(new Runnable() {

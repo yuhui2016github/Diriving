@@ -17,12 +17,8 @@ import java.lang.ref.WeakReference;
 public class MainActivity extends Activity implements View.OnTouchListener {
 
     private static final String TAG = "driving";
-    private LinearLayout main_panel;
+
     private DashBoardView dashBoardView;
-    private Button accelerate;
-    private Button handbrake;
-    private Button brake;
-    private Thread thread;
     private Handler handler;
     private int mType = 0;
     private boolean isBraking = false;
@@ -31,6 +27,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LinearLayout main_panel;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         main_panel = (LinearLayout) findViewById(R.id.main_panel);
@@ -42,7 +39,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                         ViewGroup.LayoutParams.WRAP_CONTENT));
         handler = new StaticHandler(this);
         running = true;
-        thread = new Thread(new Runnable() {
+        Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -94,24 +91,24 @@ public class MainActivity extends Activity implements View.OnTouchListener {
      * 防止内存溢出
      */
     public static class StaticHandler extends Handler {
-        private final WeakReference mActivity;
+        private final WeakReference<MainActivity> mActivity;
 
         public StaticHandler(MainActivity activity) {
-            this.mActivity = new WeakReference<MainActivity>(activity);
+            this.mActivity = new WeakReference<>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            ((MainActivity) mActivity.get()).setSpeed();
+            mActivity.get().setSpeed();
         }
     }
 
 
     private void setButtons() {
-        accelerate = (Button) findViewById(R.id.accelerate);
-        handbrake = (Button) findViewById(R.id.handbrake);
-        brake = (Button) findViewById(R.id.brake);
+        Button accelerate = (Button) findViewById(R.id.accelerate);
+        Button handbrake = (Button) findViewById(R.id.handbrake);
+        Button brake = (Button) findViewById(R.id.brake);
         accelerate.setOnTouchListener(this);
         handbrake.setOnTouchListener(this);
         brake.setOnTouchListener(this);

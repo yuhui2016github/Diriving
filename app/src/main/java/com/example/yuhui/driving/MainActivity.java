@@ -90,6 +90,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         thread.start();
     }
 
+    /**
+     * 防止内存溢出
+     */
     public static class StaticHandler extends Handler {
         private final WeakReference mActivity;
 
@@ -100,7 +103,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            ((MainActivity)mActivity.get()).setSpeed();
+            ((MainActivity) mActivity.get()).setSpeed();
         }
     }
 

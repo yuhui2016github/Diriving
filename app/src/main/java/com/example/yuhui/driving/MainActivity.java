@@ -40,13 +40,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                 new LinearLayout
                         .LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT));
-        handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                dashBoardView.setSpeed(speed);
-//                dashBoardView.invalidate();
-            }
-        };
+        handler = new StaticHandler(this);
         running = true;
         thread = new Thread(new Runnable() {
             @Override
@@ -99,16 +93,14 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     public static class StaticHandler extends Handler {
         private final WeakReference mActivity;
 
-        public StaticHandler(Activity activity) {
-            this.mActivity = new WeakReference(activity);
+        public StaticHandler(MainActivity activity) {
+            this.mActivity = new WeakReference<MainActivity>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-//                dashBoardView.setSpeed(speed);
-//                dashBoardView.invalidate();
-
+            ((MainActivity)mActivity.get()).setSpeed();
         }
     }
 
@@ -177,5 +169,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         }
 
         return false;
+    }
+
+    private void setSpeed() {
+        dashBoardView.setSpeed(speed);
     }
 }

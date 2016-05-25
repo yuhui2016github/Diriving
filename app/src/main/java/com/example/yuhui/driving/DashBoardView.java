@@ -51,7 +51,7 @@ public class DashBoardView extends SurfaceView implements SurfaceHolder.Callback
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    @Override
+    @Deprecated //SurfceView不会调用这个方法
     protected void onDraw(Canvas canvas) {
         drawDashBoardCircle(canvas);
         drawSpeedArea(canvas);
@@ -182,10 +182,6 @@ public class DashBoardView extends SurfaceView implements SurfaceHolder.Callback
                 break;
         }
         canvas.drawText(TEXT, baseX, baseY, textPaint);
-    }
-
-    public int getSpeed() {
-        return speed;
     }
 
     public void setSpeed(int speed) {

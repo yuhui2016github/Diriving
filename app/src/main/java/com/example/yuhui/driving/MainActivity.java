@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import java.lang.ref.WeakReference;
+
 public class MainActivity extends Activity implements View.OnTouchListener {
 
     private static final String TAG = "driving";
@@ -93,6 +95,23 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         });
         thread.start();
     }
+
+    public static class StaticHandler extends Handler {
+        private final WeakReference mActivity;
+
+        public StaticHandler(Activity activity) {
+            this.mActivity = new WeakReference(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+//                dashBoardView.setSpeed(speed);
+//                dashBoardView.invalidate();
+
+        }
+    }
+
 
     private void setButtons() {
         accelerate = (Button) findViewById(R.id.accelerate);

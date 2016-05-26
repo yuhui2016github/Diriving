@@ -1,6 +1,7 @@
 package com.example.yuhui.driving;
 
 import android.app.Activity;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -33,6 +34,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         main_panel = (LinearLayout) findViewById(R.id.main_panel);
         setButtons();
         dashBoardView = new DashBoardView(this);
+//        dashBoardView.setZOrderOnTop(true);
+//        dashBoardView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         main_panel.addView(dashBoardView,
                 new LinearLayout
                         .LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -101,6 +104,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             mActivity.get().setSpeed();
+//            mActivity.get().dashBoardView.invalidate();
         }
     }
 

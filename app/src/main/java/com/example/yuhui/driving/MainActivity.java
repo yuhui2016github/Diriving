@@ -31,15 +31,15 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         LinearLayout main_panel;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        main_panel = (LinearLayout) findViewById(R.id.main_panel);
+        dashBoardView = (DashBoardView) findViewById(R.id.dashBoardView);
         setButtons();
-        dashBoardView = new DashBoardView(this);
+//        dashBoardView = new DashBoardView(this);
 //        dashBoardView.setZOrderOnTop(true);
 //        dashBoardView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-        main_panel.addView(dashBoardView,
-                new LinearLayout
-                        .LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT));
+//        main_panel.addView(dashBoardView,
+//                new LinearLayout
+//                        .LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+//                        ViewGroup.LayoutParams.WRAP_CONTENT));
         handler = new StaticHandler(this);
         running = true;
         Thread thread = new Thread(new Runnable() {

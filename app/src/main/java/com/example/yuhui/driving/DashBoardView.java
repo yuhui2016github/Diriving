@@ -1,10 +1,12 @@
 package com.example.yuhui.driving;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
@@ -29,21 +31,47 @@ public class DashBoardView extends SurfaceView implements SurfaceHolder.Callback
     private int mDensityDpi = 1;
     private SurfaceHolder mHolder;
     private boolean running;
+    private int mDashBoardColor;
+    private String mTitleText;
 
-    public DashBoardView(Context context) {
-        super(context);
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
-        textPaint = new Paint();
-        speedAreaPaint = new Paint();
+    public DashBoardView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public DashBoardView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        initViewParams(context, attrs);
+        initPaint();
+        initCenterCoord(context);
+        mHolder = this.getHolder();
+        mHolder.addCallback(this);
+    }
+
+    private void initCenterCoord(Context context) {
         WindowManager wm = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
         int width = wm.getDefaultDisplay().getWidth();
         int height = wm.getDefaultDisplay().getHeight();
         pointX = width / 2;
         pointY = height / 3;
-        mHolder = this.getHolder();
-        mHolder.addCallback(this);
+    }
+
+    private void initPaint() {
+        mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+        textPaint = new Paint();
+        speedAreaPaint = new Paint();
+    }
+
+    private void initViewParams(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DashBoardView);
+        mDashBoardColor = typedArray.getColor(R.styleable.DashBoardView_dashBoardColor, Color.WHITE);
+        mTitleText = typedArray.getString(R.styleable.DashBoardView_titleText);
+        typedArray.recycle();
+    }
+
+    public DashBoardView(Context context) {
+        this(context, null);
     }
 
     @Override
@@ -60,6 +88,14 @@ public class DashBoardView extends SurfaceView implements SurfaceHolder.Callback
             drawText(canvas, i * 20);
         }
         drawCenter(canvas);
+        drawTitle(canvas);
+    }
+
+    private void drawTitle(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setColor(mDashBoardColor);
+        paint.setTextSize(50);
+        canvas.drawText(mTitleText, pointX - paint.measureText(mTitleText) / 2, pointY - radius - 30, paint);
     }
 
     private void drawSpeedArea(Canvas canvas) {
@@ -204,7 +240,7 @@ public class DashBoardView extends SurfaceView implements SurfaceHolder.Callback
                             drawText(canvas, i * 20);
                         }
                         drawCenter(canvas);
-
+                        drawTitle(canvas);
                     } catch (NullPointerException ep) {
                         ep.printStackTrace();
                     } finally {

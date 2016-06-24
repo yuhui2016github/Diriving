@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="titles">
+        <item>Fragments</item>
+        <item>DashBoardView</item>
+        <item>新网关</item>
+        <item>微软云</item>
+        <item>安井食品</item>
+        <item>欣和</item>
+        <item>欣和</item>
+        <item>欣和车销</item>
+        <item>和黄</item>
+        <item>7天</item>
+        <item>正邦</item>
+        <item>杨翔</item>
+        <item>6.0</item>
+        <item>屈臣氏</item>
+        <item>恒大SFA</item>
+        <item>榄菊</item>
+        <item>三全</item>
+        <item>三全测试</item>
+        <item>好来</item>
+        <item>大冢</item>
+        <item>6.1</item>
+        <item>6.2</item>
+        <item>红牛</item>
+    </string-array>
+</resources>

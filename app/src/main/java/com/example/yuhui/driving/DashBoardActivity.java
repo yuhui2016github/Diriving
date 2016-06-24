@@ -136,9 +136,14 @@ public class DashBoardActivity extends Activity implements View.OnTouchListener,
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        running = false;
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        running = false;
     }
 
     @Override

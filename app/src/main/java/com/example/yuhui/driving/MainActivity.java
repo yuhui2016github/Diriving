@@ -1,7 +1,6 @@
 package com.example.yuhui.driving;
 
 import android.app.Activity;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,13 +8,15 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
 import java.lang.ref.WeakReference;
 
-public class MainActivity extends Activity implements View.OnTouchListener {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class MainActivity extends Activity implements View.OnTouchListener,View.OnClickListener{
 
     private static final String TAG = "driving";
 
@@ -26,13 +27,19 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     private int speed = 0;
     private boolean running;
 
+    @BindView(R.id.accelerate)Button accelerate ;
+    @BindView(R.id.handbrake)Button handbrake ;
+    @BindView(R.id.brake)Button brake;
+    @BindView(R.id.animation)Button animation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         LinearLayout main_panel;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         dashBoardView = (DashBoardView) findViewById(R.id.dashBoardView);
-        setButtons();
+        setButtonListeners();
 //        dashBoardView = new DashBoardView(this);
 //        dashBoardView.setZOrderOnTop(true);
 //        dashBoardView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
@@ -109,13 +116,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
 
-    private void setButtons() {
-        Button accelerate = (Button) findViewById(R.id.accelerate);
-        Button handbrake = (Button) findViewById(R.id.handbrake);
-        Button brake = (Button) findViewById(R.id.brake);
+    private void setButtonListeners() {
         accelerate.setOnTouchListener(this);
         handbrake.setOnTouchListener(this);
         brake.setOnTouchListener(this);
+        animation.setOnClickListener(this);
     }
 
     @Override
@@ -173,6 +178,16 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         }
 
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.animation:
+                break;
+            default:
+                break;
+        }
     }
 
     private void setSpeed() {

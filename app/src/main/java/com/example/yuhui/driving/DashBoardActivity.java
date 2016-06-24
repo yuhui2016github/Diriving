@@ -25,7 +25,7 @@ public class DashBoardActivity extends Activity implements View.OnTouchListener,
     private int mType = 0;
     private boolean isBraking = false;
     private int speed = 0;
-    private boolean running;
+    private volatile boolean running;
 
     @BindView(R.id.accelerate)Button accelerate ;
     @BindView(R.id.handbrake)Button handbrake ;

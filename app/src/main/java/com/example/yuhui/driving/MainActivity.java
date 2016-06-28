@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
 import com.example.yuhui.driving.adapter.TitleAdapter;
+import com.example.yuhui.driving.customview.TitleListView;
 import com.example.yuhui.driving.fragments.FragmentsActivity;
 
 import java.util.Arrays;
@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends Activity implements TitleAdapter.OnItemClickListener {
 
     @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
+    TitleListView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,9 @@ public class MainActivity extends Activity implements TitleAdapter.OnItemClickLi
             intent.setClass(this, FragmentsActivity.class);
         } else if (item.equals("DashBoardView")) {
             intent.setClass(this, DashBoardActivity.class);
+        } else {
+            onBackPressed();
+            return;
         }
         startActivity(intent);
     }

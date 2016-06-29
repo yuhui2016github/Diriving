@@ -29,6 +29,7 @@ public class TitleAdapter extends RecyclerView.Adapter {
     List<String> mTitles;
     OnItemClickListener mClickListener;
     LinearLayout mHeader;
+    int mHeaderHeight;
 
     public TitleAdapter(Context context) {
         this.mContext = context;
@@ -49,7 +50,7 @@ public class TitleAdapter extends RecyclerView.Adapter {
                     .inflate(R.layout.layout_title_header, parent, false);
             mHeader = (LinearLayout) itemView;
             mHeader.measure(0,0);
-            int mHeaderHeight = 0; // mHeader.getMeasuredHeight();
+            mHeaderHeight = mHeader.getMeasuredHeight();
             mHeader.setPadding(0,-mHeaderHeight,0,0);
             return new TitleHeaderHolder(itemView);
         } else {
@@ -115,5 +116,9 @@ public class TitleAdapter extends RecyclerView.Adapter {
 
     public LinearLayout getHeader() {
         return mHeader;
+    }
+
+    public int getHeaderHeight() {
+        return mHeaderHeight;
     }
 }

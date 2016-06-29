@@ -1,6 +1,7 @@
 package com.example.yuhui.driving.customview;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -30,34 +31,51 @@ public class TitleListView extends RecyclerView {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN)
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
             mOldY = event.getY();
-        Log.e("yuhui", "mOldY : " + mOldY);
+        }
         return super.dispatchTouchEvent(event);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
+        int mHeaderHeight = ((TitleAdapter) getAdapter()).getHeaderHeight();
+        LinearLayoutManager mLayoutManager = (LinearLayoutManager) getLayoutManager();
+        int firstPosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();
+        int lastPosition = mLayoutManager.findLastCompletelyVisibleItemPosition();
+        Log.e("yuhui", "lastPosition" + lastPosition + "   mLayoutManager().getChildCount  " + mLayoutManager.getChildCount());
+        Log.i("yuhui", "mDiff " + mDiff);
+        Log.i("yuhui", "mOldY " + mOldY);
+        // TODO: 2016-6-29  需要控制好，当滑动是从第二个页面开始的情况
+        if (lastPosition == mLayoutManager.getChildCount()) {
+            if (mDiff > 0) {
                 mOldY = event.getY();
-                Log.i("yuhui", "mOldY : " + mOldY);
-                break;
+            }
+        }
+        switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
                 float moveY = event.getY();
                 mDiff = (int) (moveY - mOldY);
-                Log.v("yuhui", "diff : " + mDiff);
                 if (getAdapter() instanceof TitleAdapter) {
                     LinearLayout header = ((TitleAdapter) getAdapter()).getHeader();
-                    header.setPadding(0, mDiff, 0, 0);
+
+
+                    if (firstPosition <= 1 && mDiff > 0) {
+                        Log.i("yuhui", "ACTION_MOVE mDiff " + mDiff + "   mHeaderHeight " + mHeaderHeight);
+                        header.setPadding(0, mDiff - mHeaderHeight, 0, 0);
+                        return true;
+                    }
+                    if (header.getPaddingTop() > -mHeaderHeight) {
+                        return true;
+                    }
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 if (getAdapter() instanceof TitleAdapter) {
                     LinearLayout header = ((TitleAdapter) getAdapter()).getHeader();
-                    int mHeaderHeight =0; // header.getMeasuredHeight();
-                    if (mDiff > 0) {
-                        header.setPadding(0,-mHeaderHeight, 0, 0);
+                    if (firstPosition <= 1) {
+                        header.setPadding(0, -mHeaderHeight, 0, 0);
+                        return true;
                     }
                 }
                 break;

@@ -1,5 +1,6 @@
 package com.example.yuhui.driving.customview;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,7 +40,7 @@ public class TitleListView extends RecyclerView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int mHeaderHeight = ((TitleAdapter) getAdapter()).getHeaderHeight();
+        final int mHeaderHeight = ((TitleAdapter) getAdapter()).getHeaderHeight();
         LinearLayoutManager mLayoutManager = (LinearLayoutManager) getLayoutManager();
         int firstPosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();
         int lastPosition = mLayoutManager.findLastCompletelyVisibleItemPosition();
@@ -72,9 +73,18 @@ public class TitleListView extends RecyclerView {
                 break;
             case MotionEvent.ACTION_UP:
                 if (getAdapter() instanceof TitleAdapter) {
-                    LinearLayout header = ((TitleAdapter) getAdapter()).getHeader();
                     if (firstPosition <= 1) {
-                        header.setPadding(0, -mHeaderHeight, 0, 0);
+                        final LinearLayout header = ((TitleAdapter) getAdapter()).getHeader();
+                        ValueAnimator animator = new ValueAnimator().ofInt(header.getPaddingTop(),-mHeaderHeight);
+                        animator.setDuration(500);
+                        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                int animatedValue = (int) animation.getAnimatedValue();
+                                header.setPadding(0, animatedValue, 0, 0);
+                            }
+                        });
+                        animator.start();
                         return true;
                     }
                 }

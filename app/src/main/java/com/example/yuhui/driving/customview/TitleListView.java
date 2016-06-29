@@ -55,8 +55,9 @@ public class TitleListView extends RecyclerView {
             case MotionEvent.ACTION_UP:
                 if (getAdapter() instanceof TitleAdapter) {
                     LinearLayout header = ((TitleAdapter) getAdapter()).getHeader();
+                    int mHeaderHeight =0; // header.getMeasuredHeight();
                     if (mDiff > 0) {
-                        header.setPadding(0, 0, 0, 0);
+                        header.setPadding(0,-mHeaderHeight, 0, 0);
                     }
                 }
                 break;

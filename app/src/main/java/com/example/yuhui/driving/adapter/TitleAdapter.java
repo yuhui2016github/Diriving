@@ -48,6 +48,9 @@ public class TitleAdapter extends RecyclerView.Adapter {
             View itemView = LayoutInflater.from(mContext)
                     .inflate(R.layout.layout_title_header, parent, false);
             mHeader = (LinearLayout) itemView;
+            mHeader.measure(0,0);
+            int mHeaderHeight = 0; // mHeader.getMeasuredHeight();
+            mHeader.setPadding(0,-mHeaderHeight,0,0);
             return new TitleHeaderHolder(itemView);
         } else {
             View itemView = LayoutInflater.from(mContext)
@@ -71,7 +74,7 @@ public class TitleAdapter extends RecyclerView.Adapter {
                 }
             });
         } else if (holder instanceof TitleHeaderHolder) {
-            TitleHeaderHolder titleHeaderHolder = (TitleHeaderHolder) holder;
+            //do nothing
         }
     }
 

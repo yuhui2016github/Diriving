@@ -42,8 +42,9 @@ public class MainActivity extends Activity implements TitleAdapter.OnItemClickLi
             intent.setClass(this, FragmentsActivity.class);
         } else if (item.equals("DashBoardView")) {
             intent.setClass(this, DashBoardActivity.class);
+        } else if (item.equals("Animation")) {
+            intent.setClass(this, AnimationActivity.class);
         } else {
-            onBackPressed();
             return;
         }
         startActivity(intent);

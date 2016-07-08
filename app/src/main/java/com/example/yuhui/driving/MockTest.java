@@ -9,8 +9,19 @@ public class MockTest {
 
     public void login(String username, String password) {
         if (username == null || username.length() == 0) return;
-        if (! mPasswordValidator.verifyPassword(password)) return;
-            mUserManager.performLogin(username, password);
+        if (!mPasswordValidator.verifyPassword(password)) return;
+        mUserManager.performLogin(username, password);
+        mUserManager.performLogin(username, password, new NetworkCallback() {
+            @Override
+            public void onSuccess(Object data) {
+
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+
+            }
+        });
 
     }
 
@@ -23,13 +34,29 @@ public class MockTest {
     }
 
     static class UserManager {
+        public void performLogin(String username, String password, NetworkCallback networkCallback) {
+            System.out.print("username " + username);
+        }
+
+        ;
+
         public void performLogin(String username, String password) {
-            System.out.print(username + password);
+
+        }
+
+        ;
+
+    }
+
+    static class PasswordValidator {
+        public boolean verifyPassword(String password) {
+            return "xiaochuang password".equals(password);
         }
     }
-    static class PasswordValidator {
-        public boolean verifyPassword(String password){
-            return true;
-        }
+
+    interface NetworkCallback {
+        public void onSuccess(Object data);
+
+        public void onFailure(int code, String msg);
     }
 }

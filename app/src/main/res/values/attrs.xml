@@ -4,4 +4,7 @@
         <attr name="dashBoardColor" format="color" />
         <attr name="titleText" format="string" />
     </declare-styleable>
+    <declare-styleable name="Follow">
+        <attr name="target" format="reference" />
+    </declare-styleable>
 </resources>

@@ -31,6 +31,12 @@
                 <category android:name="android.intent.category.default" />
             </intent-filter>
         </activity>
+        <activity android:name=".coordinatorlayout.CoordinatorLayoutLearnActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <category android:name="android.intent.category.default" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

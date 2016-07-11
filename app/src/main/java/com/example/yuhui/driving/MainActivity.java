@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.example.yuhui.driving.adapter.TitleAdapter;
+import com.example.yuhui.driving.coordinatorlayout.CoordinatorLayoutLearnActivity;
 import com.example.yuhui.driving.customview.TitleListView;
 import com.example.yuhui.driving.fragments.FragmentsActivity;
 
@@ -44,6 +45,8 @@ public class MainActivity extends Activity implements TitleAdapter.OnItemClickLi
             intent.setClass(this, DashBoardActivity.class);
         } else if (item.equals("Animation")) {
             intent.setClass(this, AnimationActivity.class);
+        } else if (item.equals("CoordinatorLayout")) {
+            intent.setClass(this, CoordinatorLayoutLearnActivity.class);
         } else {
             return;
         }

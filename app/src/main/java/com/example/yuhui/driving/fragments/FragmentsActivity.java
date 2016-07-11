@@ -45,6 +45,7 @@ public class FragmentsActivity extends FragmentActivity implements View.OnKeyLis
                 ((TextView) findViewById(R.id.textView)).setText("onBackStackChanged");
             }
         });
+
     }
 
     @Override

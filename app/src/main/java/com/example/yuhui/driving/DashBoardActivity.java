@@ -11,6 +11,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.yuhui.driving.animation.AnimationActivity;
+
 import java.lang.ref.WeakReference;
 
 import butterknife.BindView;
@@ -23,9 +25,14 @@ public class DashBoardActivity extends Activity implements View.OnTouchListener,
     private DashBoardView dashBoardView;
     private Handler handler;
     private int mType = 0;
-    private boolean isBraking = false;
+    static private boolean isBraking = false;
     private int speed = 0;
     private volatile boolean running;
+    //对于匿名类Runnable，同样可以将其设置为静态类。因为静态的匿名类不会持有对外部类的引用,避免导致内存泄漏
+    private static final Runnable sRunnable = new Runnable() {
+        @Override
+        public void run() { isBraking = false; }
+    };
 
     @BindView(R.id.accelerate)Button accelerate ;
     @BindView(R.id.handbrake)Button handbrake ;
@@ -162,12 +169,7 @@ public class DashBoardActivity extends Activity implements View.OnTouchListener,
                 if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_UP) {
                     mType = 3;
                     isBraking = true;
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            isBraking = false;
-                        }
-                    }, 1000);
+                    handler.postDelayed(sRunnable, 1000);
                 }
                 break;
             case R.id.brake:

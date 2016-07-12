@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.example.yuhui.driving.adapter.TitleAdapter;
+import com.example.yuhui.driving.animation.AnimationActivity;
 import com.example.yuhui.driving.coordinatorlayout.CoordinatorLayoutLearnActivity;
 import com.example.yuhui.driving.customview.TitleListView;
 import com.example.yuhui.driving.fragments.FragmentsActivity;

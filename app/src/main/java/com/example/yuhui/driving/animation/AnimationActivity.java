@@ -1,4 +1,4 @@
-package com.example.yuhui.driving;
+package com.example.yuhui.driving.animation;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -14,6 +14,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.yuhui.driving.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

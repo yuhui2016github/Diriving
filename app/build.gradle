@@ -39,5 +39,6 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.1.0'
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:2.0+"
+    compile 'de.greenrobot:eventbus:3.0+'
 }
 

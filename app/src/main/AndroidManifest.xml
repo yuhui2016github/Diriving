@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.default" />
             </intent-filter>
         </activity>
-        <activity android:name=".AnimationActivity">
+        <activity android:name=".animation.AnimationActivity">
             <intent-filter>
                 <category android:name="android.intent.category.default" />
             </intent-filter>

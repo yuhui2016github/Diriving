@@ -48,6 +48,8 @@ public class MainActivity extends Activity implements TitleAdapter.OnItemClickLi
             intent.setClass(this, AnimationActivity.class);
         } else if (item.equals("CoordinatorLayout")) {
             intent.setClass(this, CoordinatorLayoutLearnActivity.class);
+        } else if (item.equals("Client and Service")) {
+            intent.setClass(this, MyClientActivity.class);
         } else {
             return;
         }

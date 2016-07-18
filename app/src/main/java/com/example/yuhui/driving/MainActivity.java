@@ -9,6 +9,7 @@ import com.example.yuhui.driving.adapter.TitleAdapter;
 import com.example.yuhui.driving.animation.AnimationActivity;
 import com.example.yuhui.driving.coordinatorlayout.CoordinatorLayoutLearnActivity;
 import com.example.yuhui.driving.customview.TitleListView;
+import com.example.yuhui.driving.fragments.FlipCardFragmentActivity;
 import com.example.yuhui.driving.fragments.FragmentsActivity;
 
 import java.util.Arrays;
@@ -50,6 +51,8 @@ public class MainActivity extends Activity implements TitleAdapter.OnItemClickLi
             intent.setClass(this, CoordinatorLayoutLearnActivity.class);
         } else if (item.equals("Client and Service")) {
             intent.setClass(this, MyClientActivity.class);
+        } else if (item.equals("FlipCardFragmentActivity")) {
+            intent.setClass(this, FlipCardFragmentActivity.class);
         } else {
             return;
         }

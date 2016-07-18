@@ -41,6 +41,11 @@ public class MyClientActivity extends Activity {
         Intent intent = new Intent();
         intent.setClass(this, MyService.class);
         bindService(intent, conn, BIND_AUTO_CREATE);
+        try {
+            Class.forName("edu.qust.demo.Person");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

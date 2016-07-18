@@ -43,8 +43,13 @@
                 <category android:name="android.intent.category.default" />
             </intent-filter>
         </activity>
+        <activity android:name=".fragments.FlipCardFragmentActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.default" />
+            </intent-filter>
+        </activity>
 
-        <service android:name=".MyService"/>
+        <service android:name=".MyService" />
     </application>
 
 </manifest>

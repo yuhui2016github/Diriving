@@ -59,8 +59,6 @@ public class FragmentsActivity extends FragmentActivity implements View.OnKeyLis
 
     public void change(View v) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.animator.card_filp_right_in, R.animator.card_filp_right_out,
-                R.animator.card_filp_left_in, R.animator.card_filp_left_out);
         fragmentTransaction.replace(R.id.article_reader_container, new ArticleListFragment());
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();

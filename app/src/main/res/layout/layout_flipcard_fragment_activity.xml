@@ -5,7 +5,6 @@
 
     <FrameLayout
         android:id="@+id/flip_card_fragment"
-        android:layout_width="200dp"
-        android:layout_height="300dp"
-        android:layout_margin="50dp" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

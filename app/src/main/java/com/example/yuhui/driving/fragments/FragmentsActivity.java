@@ -19,12 +19,13 @@ import butterknife.OnClick;
 /**
  * Created by yuhui on 2016-6-24.
  */
-public class FragmentsActivity extends FragmentActivity implements View.OnKeyListener{
+public class FragmentsActivity extends FragmentActivity implements View.OnKeyListener {
     @BindView(R.id.butterKnife_button)
     Button butterKnife_button;
     @BindView(R.id.butterKnife_textview)
     TextView butterKnife_textview;
-    @BindString(R.string.app_name) String title;
+    @BindString(R.string.app_name)
+    String title;
     FragmentManager fragmentManager;
 
     @Override
@@ -58,6 +59,8 @@ public class FragmentsActivity extends FragmentActivity implements View.OnKeyLis
 
     public void change(View v) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.animator.card_filp_right_in, R.animator.card_filp_right_out,
+                R.animator.card_filp_left_in, R.animator.card_filp_left_out);
         fragmentTransaction.replace(R.id.article_reader_container, new ArticleListFragment());
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();

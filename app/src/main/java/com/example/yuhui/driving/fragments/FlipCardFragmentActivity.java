@@ -55,8 +55,8 @@ public class FlipCardFragmentActivity extends FragmentActivity implements View.O
     private void changeFragment() {
         fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.animator.card_filp_right_in, R.animator.card_filp_right_out,
-                R.animator.card_filp_left_in, R.animator.card_filp_left_out);
+        fragmentTransaction.setCustomAnimations(R.animator.card_flip_right_in, R.animator.card_flip_right_out,
+                R.animator.card_flip_left_in, R.animator.card_flip_left_out);
         fragmentTransaction.replace(R.id.flip_card_fragment, new BackCardFragment(), "BackCardFragment");
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();

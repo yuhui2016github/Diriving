@@ -2,13 +2,15 @@ package com.example.yuhui.driving;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.example.yuhui.driving.aidl.ICompute;
 
 /**
  * Created by yuhui on 2016-7-14.
@@ -39,13 +41,28 @@ public class MyService extends Service {
     }
 
 
-    class MyBinder extends Binder {
+    class MyBinder extends ICompute.Stub {
 
         public MyBinder() {
         }
 
         public MyService getService() {
             return MyService.this;
+        }
+
+        @Override
+        public int add(int a, int b) throws RemoteException {
+            return 0;
+        }
+
+        @Override
+        public int get() throws RemoteException {
+            return 0;
+        }
+
+        @Override
+        public void sayHello() throws RemoteException {
+            MyService.this.sayHello();
         }
     }
 }

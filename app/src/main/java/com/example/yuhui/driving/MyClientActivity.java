@@ -6,21 +6,27 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.util.Log;
+
+import com.example.yuhui.driving.aidl.ICompute;
 
 /**
  * Created by yuhui on 2016-7-14.
  */
 public class MyClientActivity extends Activity {
-    MyService.MyBinder myBinder;
-    MyService myService;
+    ICompute myBinder;
     ServiceConnection conn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            myBinder = (MyService.MyBinder) service;
-            myService = myBinder.getService();
+//            myBinder = (ICompute)service; // android.os.BinderProxy cannot be cast to com.example.yuhui.driving.aidl.ICompute
+            myBinder = ICompute.Stub.asInterface(service);
             Log.i("yuhui","client hello");
-            myService.sayHello();
+            try {
+                myBinder.sayHello();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override

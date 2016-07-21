@@ -53,6 +53,8 @@ public class MainActivity extends Activity implements TitleAdapter.OnItemClickLi
             intent.setClass(this, MyClientActivity.class);
         } else if (item.equals("FlipCardFragmentActivity")) {
             intent.setClass(this, FlipCardFragmentActivity.class);
+        } else if (item.equals("DrawingActivity")) {
+            intent.setClass(this, DrawingActivity.class);
         } else {
             return;
         }

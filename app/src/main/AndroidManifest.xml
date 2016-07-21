@@ -48,8 +48,17 @@
                 <category android:name="android.intent.category.default" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DrawingActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <category android:name="android.intent.category.default" />
+            </intent-filter>
+        </activity>
 
-        <service android:name=".MyService" android:process=":remote"/>
+        <service
+            android:name=".MyService"
+            android:process=":remote" />
     </application>
 
 </manifest>

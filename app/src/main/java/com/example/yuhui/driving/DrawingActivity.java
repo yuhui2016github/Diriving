@@ -9,8 +9,12 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 /**
  * Created by yuhui on 2016-7-21.
@@ -18,6 +22,7 @@ import android.view.View;
 public class DrawingActivity extends Activity {
     DrawingView dv;
     private Paint mPaint;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +38,36 @@ public class DrawingActivity extends Activity {
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeWidth(8);
 
+
         Log.d("onCreate", "onCreateActivityMain=========================");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    //运行到这个方法的时候系统才会肯定得告知你这个activity已经加载完毕。可以和用户进行交互了,也就是ContentView可以用了
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        TextView textView_1 = new TextView(this);
+        textView_1.setText("PopupWindow1");
+        PopupWindow popupWindow1 = new PopupWindow(textView_1,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT, false);
+        textView_1.setTextColor(Color.BLUE);
+        popupWindow1.setOutsideTouchable(false);
+        popupWindow1.showAtLocation(dv, Gravity.LEFT | Gravity.CENTER_HORIZONTAL, 0, 0);
+
+        TextView textView_2 = new TextView(this);
+        textView_2.setText("PopupWindow2");
+        textView_2.setTextColor(Color.RED);
+        PopupWindow popupWindow2 = new PopupWindow(textView_2,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT, false);
+        popupWindow1.setOutsideTouchable(false);
+        popupWindow2.showAtLocation(dv, Gravity.RIGHT | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
     public class DrawingView extends View {
@@ -61,7 +95,6 @@ public class DrawingActivity extends Activity {
             circlePaint.setStyle(Paint.Style.STROKE);
             circlePaint.setStrokeJoin(Paint.Join.MITER);
             circlePaint.setStrokeWidth(4f);
-
             Log.d("DrawingView", "DrawingView=========================");
 
         }

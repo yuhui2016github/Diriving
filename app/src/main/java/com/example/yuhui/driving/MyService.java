@@ -2,6 +2,7 @@ package com.example.yuhui.driving;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -31,10 +32,10 @@ public class MyService extends Service {
 
     public void sayHello() {
         Handler handler = new Handler(Looper.getMainLooper());
-        //要toast能够正常工作，需要在Activity的主线程上运行才行
+        //要toast能够正常工作，需要在Activity的主线程上运行才行,本地service就不用，因为远程binder会运行在binder线程池中
         handler.post(new Runnable() {
             public void run() {
-                Toast.makeText(getApplicationContext(), "Service is on!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Mybinder Service is on!", Toast.LENGTH_LONG).show();
             }
         });
         Log.i("yuhui", "service hello");
@@ -63,6 +64,12 @@ public class MyService extends Service {
         @Override
         public void sayHello() throws RemoteException {
             MyService.this.sayHello();
+        }
+    }
+
+    class LocalBinder extends Binder {
+        public void sayHello() {
+            Toast.makeText(getApplicationContext(), "LocalBinder Service is on!", Toast.LENGTH_LONG).show();
         }
     }
 }

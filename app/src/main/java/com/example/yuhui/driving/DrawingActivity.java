@@ -58,6 +58,7 @@ public class DrawingActivity extends Activity {
                 WindowManager.LayoutParams.WRAP_CONTENT, false);
         textView_1.setTextColor(Color.BLUE);
         popupWindow1.setOutsideTouchable(false);
+        popupWindow1.setBackgroundDrawable(getResources().getDrawable(R.drawable.card_back));
         popupWindow1.showAtLocation(dv, Gravity.LEFT | Gravity.CENTER_HORIZONTAL, 0, 0);
 
         TextView textView_2 = new TextView(this);

@@ -38,13 +38,9 @@ public class MockTest {
             System.out.print("username " + username);
         }
 
-        ;
-
         public void performLogin(String username, String password) {
 
         }
-
-        ;
 
     }
 

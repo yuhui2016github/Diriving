@@ -18,6 +18,7 @@ import java.lang.ref.WeakReference;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
 public class DashBoardActivity extends Activity implements View.OnTouchListener,View.OnClickListener{
 
     private static final String TAG = "driving";

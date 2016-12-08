@@ -261,5 +261,6 @@ public class DashBoardView extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         running = false;
+        mHolder.removeCallback(this);
     }
 }

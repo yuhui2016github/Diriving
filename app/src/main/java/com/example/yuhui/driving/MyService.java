@@ -7,11 +7,12 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.yuhui.driving.aidl.ICompute;
+import com.example.yuhui.driving.aidl.ITaskCallback;
+
 
 /**
  * Created by yuhui on 2016-7-14.
@@ -24,7 +25,6 @@ public class MyService extends Service {
         super.onCreate();
     }
 
-    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return binder;
@@ -32,13 +32,21 @@ public class MyService extends Service {
 
     public void sayHello() {
         Handler handler = new Handler(Looper.getMainLooper());
-        //要toast能够正常工作，需要在Activity的主线程上运行才行,本地service就不用，因为远程binder会运行在binder线程池中
+        //要toast能够正常工作，需要在主线程上运行才行,本地service就不用，因为远程binder会运行在binder线程池中
         handler.post(new Runnable() {
             public void run() {
                 Toast.makeText(getApplicationContext(), "Mybinder Service is on!", Toast.LENGTH_LONG).show();
             }
         });
         Log.i("yuhui", "service hello");
+    }
+
+    public void callback(ITaskCallback cb) {
+        try {
+            cb.clientCallback();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -64,7 +72,15 @@ public class MyService extends Service {
         @Override
         public void sayHello() throws RemoteException {
             MyService.this.sayHello();
+
         }
+
+        @Override
+        public void callback(ITaskCallback cb) throws RemoteException {
+            MyService.this.callback(cb);
+        }
+
+
     }
 
     class LocalBinder extends Binder {

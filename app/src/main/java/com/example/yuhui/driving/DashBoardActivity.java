@@ -154,6 +154,7 @@ public class DashBoardActivity extends Activity implements View.OnTouchListener,
         super.onDestroy();
     }
 
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (v.getId()) {
@@ -184,6 +185,8 @@ public class DashBoardActivity extends Activity implements View.OnTouchListener,
 
         return false;
     }
+
+
 
     @Override
     public void onClick(View v) {

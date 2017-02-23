@@ -10,6 +10,7 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.example.yuhui.driving.aidl.ICompute;
+import com.example.yuhui.driving.aidl.ITaskCallback;
 
 /**
  * Created by yuhui on 2016-7-14.
@@ -21,9 +22,15 @@ public class MyClientActivity extends Activity {
         public void onServiceConnected(ComponentName name, IBinder service) {
 //            myBinder = (ICompute)service; // android.os.BinderProxy cannot be cast to com.example.yuhui.driving.aidl.ICompute
             myBinder = ICompute.Stub.asInterface(service);
-            Log.i("yuhui","client hello");
+            Log.i("yuhui", "client hello");
             try {
                 myBinder.sayHello();
+                myBinder.callback(new ITaskCallback.Stub() {
+                    @Override
+                    public void clientCallback() throws RemoteException {
+                        Log.i("yuhui", "Callback from Client");
+                    }
+                });
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
